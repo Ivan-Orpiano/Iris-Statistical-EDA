@@ -60,5 +60,10 @@ def regression_report(name: str, y_true, y_pred, n: int, p: int) -> dict:
 
 
 
+def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.RegressionResults:
+    
+
+
+
 
 
