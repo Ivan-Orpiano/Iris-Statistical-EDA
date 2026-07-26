@@ -77,6 +77,14 @@ def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.Re
         "ci_low" : ci[0].values,
         "ci_high" : ci[1].values,
     }, index = model.params.index)
+    tbl["signif"] = np.where(tbl["p_value"] < 0.05, "   *", "")
+    with pd.option_context("display.float_format", lambda v: f"{v:8.4f}"):
+        print(tbl)
+        
+    print("\nGoodness of fit")
+    print(f"    R-squared       :   {model.rsquared:.4f}")
+    print(f"    Adj. R-squared  :   {model.rsquared_adj:.4f}")
+    
     
     
     
