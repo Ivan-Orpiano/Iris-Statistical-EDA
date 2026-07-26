@@ -62,9 +62,32 @@ def regression_report(name: str, y_true, y_pred, n: int, p: int) -> dict:
 
 def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.RegressionResults:
     X_sm = sm.add_constant(X_train)
+    model = sm.OLS(y_train, X_sm).fit()
+
+    print("\n" + "=" * 70)
+    print("OLS Coefficient Inference (does each predictor matter?)")
+    print("=" * 70)
+    ci = model.conf_int(alpha = 0.05)
+    tbl = pd.DataFrame({
+        "true" : [true_coefs.get(k, np.nan) for k in model.params.index],
+        "estimate" : model.params.values,
+        "std_err" : model.bse.values,
+        "t" : model.tvalues.values,
+        "p_value" : model.pvalues.values,
+        "ci_low" : ci[0].values,
+        "ci_high" : ci[1].values,
+    }, index = model.params.index)
     
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
