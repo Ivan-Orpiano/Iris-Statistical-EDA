@@ -84,12 +84,62 @@ def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.Re
     print("\nGoodness of fit")
     print(f"    R-squared       :   {model.rsquared:.4f}")
     print(f"    Adj. R-squared  :   {model.rsquared_adj:.4f}")
+    print(f"  F-statistic      : {model.fvalue:.2f}  (p={model.f_pvalue:.2e})")
+    print(f"  AIC / BIC        : {model.aic:.1f} / {model.bic:.1f}")
+    print("  Note: x3 (true coef 0) should be non-significant (p >= 0.05).")
+    return model
+
+
+# Regularize Model Comparison
+
+def compare_models (X_train, X_test, y_train, y_test) -> pd.DataFrame:
+    n_test, p=X_test.shape
+    models = {
+        "LinearRegression" : make_pipeline(StandardScaler(), LinearRegression()),
+        "Ridge (a=1.0)" :   make_pipeline(StandardScaler(), Ridge(alpha = 1.0)),
+        "Lasso (a=0.1)" :   make_pipeline(StandardScaler(), Lasso(alpha = 0.1)),
+    }    
+    
+    print("\n" + "=" * 70)
+    print("HELD-PIT TEST PERFORMANCE")
+    print("=" * 70)
+    rows = []
+    for name, pipe in models.items():
+        pipe.fit(X_train, y_train)
+        rows.append(regression_report(name, y_test, pipe.predict(X_test), n_test, p))
+    return pd.DataFrame(rows)
     
     
+# Cross-validation
+def cross_validate(X, y) -> None:
+    kf = KFold(n_splits = 5, shuffle= True, random_state=42)
+    pipe = make_pipeline(StandardScaler(), LinearRegression())
+    r2_scores = cross_val_score(pipe, X, y, cv = kf, scoring = "r2")
+    rmse_scores = -cross_val_score(pipe, X, y, cv = kf, scoring = "neg_root_mean_squared_error")
+    print("\n" + "=" * 70)
+    print("5-FOLD CROSS VALIDATIO   (GENERALIZATION STABILITY)" )
+    print("=" * 70)
+    print(f"    R2 per fold: {np.round(r2_scores, 4)}")
+    print(f"  R2   mean±std : {r2_scores.mean():.4f} ± {r2_scores.std():.4f}")
+    print(f"  RMSE mean±std : {rmse_scores.mean():.4f} ± {rmse_scores.std():.4f}")
     
     
+#residual diagnostics
+def residual_diagnostics(model, X,train) -> None:
+    resid = model.resid
+    print("\n" + "=" * 70)
+    print("RESIDUAL DIAGNOSTICS (are OLS assumptions met?)")
+    print("=" * 70)
+    
+    #normality of residuals
+    sh_stat, sh_p = stats.shapiro(resid)
+    print(f"Shapiro-Wilk (normality)    :   W={sh_stat:.4f} p={sh_p:.4f}"
+          f"    -> {'OK' if sh_p > 0.05 else 'violated'}")
     
     
+    #independence of erros
+    
+        
     
     
     
