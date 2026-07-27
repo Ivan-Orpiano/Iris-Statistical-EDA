@@ -84,9 +84,15 @@ def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.Re
     print("\nGoodness of fit")
     print(f"    R-squared       :   {model.rsquared:.4f}")
     print(f"    Adj. R-squared  :   {model.rsquared_adj:.4f}")
-    
-    
-    
+    print(f"  F-statistic      : {model.fvalue:.2f}  (p={model.f_pvalue:.2e})")
+    print(f"  AIC / BIC        : {model.aic:.1f} / {model.bic:.1f}")
+    print("  Note: x3 (true coef 0) should be non-significant (p >= 0.05).")
+    return model
+
+
+# Regularize Model Comparison
+
+
     
     
     
