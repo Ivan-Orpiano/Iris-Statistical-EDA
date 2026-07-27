@@ -92,9 +92,30 @@ def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.Re
 
 # Regularize Model Comparison
 
+def compare_models (X_train, X_test, y_train, y_test) -> pd.DataFrame:
+    n_test, p=X_test.shape
+    models = {
+        "LinearRegression" : make_pipeline(StandardScaler(), LinearRegression()),
+        "Ridge (a=1.0)" :   make_pipeline(StandardScaler(), Ridge(alpha = 1.0)),
+        "Lasso (a=0.1)" :   make_pipeline(StandardScaler(), Lasso(alpha = 0.1)),
+    }    
+    
+    print("\n" + "=" * 70)
+    print("HELD-PIT TEST PERFORMANCE")
+    print("=" * 70)
+    rows = []
+    for name, pipe in models.items():
+        pipe.fit(X_train, y_train)
+        rows.append(regression_report(name, y_test, pipe.predict(X_test), n_test, p))
+    return pd.DataFrame(rows)
+    
+    
+# Cross-validation
+def cross_validate(X, y) -> None:
+    kf = KFold(n_splits = 5, shuffle= True, random_state=42)
+    pipe = make_pipeline(StandardScaler(), LinearRegression())
+    r2_scores = cross_val_score(pipe, X, y, cv = kf, scoring = "r2")
 
-    
-    
     
     
     
