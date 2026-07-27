@@ -143,7 +143,13 @@ def residual_diagnostics(model, X_train) -> None:
     print(f"    BREUSCH-PAGAN (HOMOSCEDAST.)    : LM={bp_stat:.4f} p={bp_p:.4f}"
           f"    -> {'OK' if bp_p > 0.05 else 'Heteroscedastic'}")
     
+    # INDEPENDENCE OF ERRORS
+    dw = durbin_watson(resid)
+    print(f"    DURBIN-WATSON (autocorr.)   :   {dw:.4f}"
+          f"    ->  {"OK" if 1.5 <  dw  < 2.5   else    'check'} (ideal ~2.0)")
     
+    #Muticollinearity
+    print()
         
     
     
