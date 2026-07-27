@@ -125,7 +125,7 @@ def cross_validate(X, y) -> None:
     
     
 #residual diagnostics
-def residual_diagnostics(model, X,train) -> None:
+def residual_diagnostics(model, X_train) -> None:
     resid = model.resid
     print("\n" + "=" * 70)
     print("RESIDUAL DIAGNOSTICS (are OLS assumptions met?)")
@@ -137,8 +137,19 @@ def residual_diagnostics(model, X,train) -> None:
           f"    -> {'OK' if sh_p > 0.05 else 'violated'}")
     
     
-    #independence of erros
+    # HOMOSCEDASTICITY
+    X_sm = sm.add_constant(X_train)
+    bp_stat, bp_p, _, _ = het_breuschpagan(resid, X_sm)
+    print(f"    BREUSCH-PAGAN (HOMOSCEDAST.)    : LM={bp_stat:.4f} p={bp_p:.4f}"
+          f"    -> {'OK' if bp_p > 0.05 else 'Heteroscedastic'}")
     
+    # INDEPENDENCE OF ERRORS
+    dw = durbin_watson(resid)
+    print(f"    DURBIN-WATSON (autocorr.)   :   {dw:.4f}"
+          f"    ->  {"OK" if 1.5 <  dw  < 2.5   else    'check'} (ideal ~2.0)")
+    
+    #Muticollinearity
+    print()
         
     
     
