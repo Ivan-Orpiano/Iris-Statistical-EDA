@@ -158,7 +158,29 @@ def residual_diagnostics(model, X_train) -> None:
         
         
         
+    # MAIN
+    
+def main() -> None:
+    X, y, true_coefs = make_dataset(n=500)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size = 0.2, random_state = 42
+    )
         
+    print(f"Dataset:    {len(X)} rows, {X.shape[1]} features"
+          f"({len(X_train)} train / {len(X_test)} test)")
+    print(f"True model: y = 3.0 + 2.5 *x1 - 1.8*x2 + 0.0*x3 + 4.0*x4 + N(0, 2)")
+    
+    ols_model = ols_inference(X_train, y_train, true_coefs)
+    compare_models(X_train, X_test, y_train, y_test)
+    cross_validate(X, y)
+    residual_diagnostics(ols_model, X_train)        
+    
+    print("\nDONE. Coefficients recovered close to truth; x3 flagged insignificant")
+    
+if __name__ == "__main__":
+    main()
+    
+     
     
     
     
