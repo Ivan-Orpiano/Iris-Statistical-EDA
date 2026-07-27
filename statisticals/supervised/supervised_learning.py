@@ -115,6 +115,16 @@ def cross_validate(X, y) -> None:
     kf = KFold(n_splits = 5, shuffle= True, random_state=42)
     pipe = make_pipeline(StandardScaler(), LinearRegression())
     r2_scores = cross_val_score(pipe, X, y, cv = kf, scoring = "r2")
+    rmse_scores = -cross_val_score(pipe, X, y, cv = kf, scoring = "neg_root_mean_squared_error")
+    print("\n" + "=" * 70)
+    print("5-FOLD CROSS VALIDATIO   (GENERALIZATION STABILITY)" )
+    print("=" * 70)
+    print(f"    R2 per fold: {np.round(r2_scores, 4)}")
+    print(f"  R2   mean±std : {r2_scores.mean():.4f} ± {r2_scores.std():.4f}")
+    print(f"  RMSE mean±std : {rmse_scores.mean():.4f} ± {rmse_scores.std():.4f}")
+    
+    
+#residual diagnostics
 
     
     
