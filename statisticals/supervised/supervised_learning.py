@@ -125,8 +125,21 @@ def cross_validate(X, y) -> None:
     
     
 #residual diagnostics
-
+def residual_diagnostics(model, X,train) -> None:
+    resid = model.resid
+    print("\n" + "=" * 70)
+    print("RESIDUAL DIAGNOSTICS (are OLS assumptions met?)")
+    print("=" * 70)
     
+    #normality of residuals
+    sh_stat, sh_p = stats.shapiro(resid)
+    print(f"Shapiro-Wilk (normality)    :   W={sh_stat:.4f} p={sh_p:.4f}"
+          f"    -> {'OK' if sh_p > 0.05 else 'violated'}")
+    
+    
+    #independence of erros
+    
+        
     
     
     
