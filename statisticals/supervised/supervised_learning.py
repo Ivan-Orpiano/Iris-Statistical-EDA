@@ -149,7 +149,15 @@ def residual_diagnostics(model, X_train) -> None:
           f"    ->  {"OK" if 1.5 <  dw  < 2.5   else    'check'} (ideal ~2.0)")
     
     #Muticollinearity
-    print()
+    print(" Variance Inflation Factors (VIF > 5-10 => multicollinearity):")
+    Xc = sm.add_constant(X_train)
+    for i, col in enumerate(Xc.columns):
+        vif = variance_inflation_factor(Xc.values, i)
+        flag = "    <-- high" if (col != "const" and vid >5) else ""
+        print(f"    {col:<8}: {vif:6.3f}{flag}")
+        
+        
+        
         
     
     
