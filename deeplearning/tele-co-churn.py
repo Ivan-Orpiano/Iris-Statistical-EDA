@@ -8,3 +8,12 @@ import numpy as np
 df = pd.read_csv("Telco-Customer-Churn.csv")
 
 
+print ("Dataset Info\n")
+print(df.info())
+print("\n Class Distribution: \n")
+print(df['Churn'].value_counts())
+print("\nSample Data:\n", df.head())
+
+
+
+
