@@ -50,11 +50,50 @@ rf_model.fit(X_train, y_train)
 y_pred = rf_model.predict(X_test)
 accuracy_initial = accuracy_score(y_test, y_pred)
 
+print(f"Initital Model Accuracy: {accuracy_initial:.4f}" )
+print("\n Classification Report \n", classification_report(y_test, y_pred))
 
 
+#defining parameter grid
+param_dist = {
+    'n_estimators' : np.arange(50,200,10),
+    'max_depth': [None, 5,10,15],
+    'min_samples_split' : [2,5,10,20],
+    'min_samples_leaf' : [1,2,4]
+}
 
- 
+#initialize RandomizedSearchCV
+random_search = RandomizedSearchCV(
+    estimator = RandomForestClassifier(random_state = 42),
+    param_distributions = param_dist,
+    n_iter = 20,
+    cv = 5,
+    scoring = 'accuracy',
+    n_jobs= -1,
+    random_state = 42
+)
 
+random_search.fit(X_train, y_train)
 
+# Get best parameters
+best_params = random_search.best_params_
+print(f"Best Parameter (RandomizedSearchCV): {best_params}")
 
+#train best model 
+best_model = random_search.best_params_
+print(f"Best Parameters(RandomizedSearchCV): {best_params}")
 
+#Train Best Model
+best_model = random_search.best_estimator_
+
+#predict and evaluate
+y_pre_tuned = best_model.predict(X_test)
+accuracy_tuned = accuracy_score(y_test, y_pre_tuned)
+
+print(f"Tuned Model Accuracy: {accuracy_tuned:.4f}")
+print("\n Classification Report (Tuned Model): \n", classification_report(y_test, y_pre_tuned))
+
+cv_scores = cross_val_score(best_model, X, y, cv= 5, scoring = 'accuracy')
+
+print(f"Cross-Validation Accuracy Scores {cv_scores}")
+print(f"Mean Cross-Validation Accuracy: {cv_scores.mean():.4f}")
