@@ -56,9 +56,6 @@ def regression_report(name: str, y_true, y_pred, n: int, p: int) -> dict:
           f"R2={r2:6.4f}  AdjR2={adj:6.4f}")
     return {"model": name, "rmse": rmse, "mae": mae, "r2": r2, "adj_r2": adj}
 
-
-
-
 def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.RegressionResults:
     X_sm = sm.add_constant(X_train)
     model = sm.OLS(y_train, X_sm).fit()
