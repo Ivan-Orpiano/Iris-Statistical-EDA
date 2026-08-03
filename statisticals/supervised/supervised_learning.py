@@ -4,7 +4,6 @@ import numpy as np
 from scipy import stats
 import pandas as pd 
 
- 
 import statsmodels.api as sm
 from statsmodels.stats.diagnostic import het_breuschpagan
 from statsmodels.stats.diagnostic import durbin_watson
