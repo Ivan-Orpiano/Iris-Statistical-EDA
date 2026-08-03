@@ -119,7 +119,6 @@ def cross_validate(X, y) -> None:
     print(f"  R2   mean±std : {r2_scores.mean():.4f} ± {r2_scores.std():.4f}")
     print(f"  RMSE mean±std : {rmse_scores.mean():.4f} ± {rmse_scores.std():.4f}")
     
-    
 #residual diagnostics
 def residual_diagnostics(model, X_train) -> None:
     resid = model.resid
