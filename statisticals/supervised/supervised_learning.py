@@ -4,7 +4,6 @@ import numpy as np
 from scipy import stats
 import pandas as pd 
 
-
 import statsmodels.api as sm
 from statsmodels.stats.diagnostic import het_breuschpagan
 from statsmodels.stats.diagnostic import durbin_watson
@@ -47,7 +46,6 @@ def adjusted_r2(r2: float, n: int, p: int) -> float:
     """Penalize R2 for the number of predictors p (excluding intercept)."""
     return 1 - (1 - r2) * (n - 1) / (n - p - 1)
 
-
 def regression_report(name: str, y_true, y_pred, n: int, p: int) -> dict:
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
     mae = mean_absolute_error(y_true, y_pred)
@@ -56,9 +54,6 @@ def regression_report(name: str, y_true, y_pred, n: int, p: int) -> dict:
     print(f"  {name:<20}  RMSE={rmse:6.3f}  MAE={mae:6.3f}  "
           f"R2={r2:6.4f}  AdjR2={adj:6.4f}")
     return {"model": name, "rmse": rmse, "mae": mae, "r2": r2, "adj_r2": adj}
-
-
-
 
 def ols_inference(X_train, y_train, true_coefs) -> sm.regression.linear_model.RegressionResults:
     X_sm = sm.add_constant(X_train)
@@ -122,7 +117,6 @@ def cross_validate(X, y) -> None:
     print(f"    R2 per fold: {np.round(r2_scores, 4)}")
     print(f"  R2   mean±std : {r2_scores.mean():.4f} ± {r2_scores.std():.4f}")
     print(f"  RMSE mean±std : {rmse_scores.mean():.4f} ± {rmse_scores.std():.4f}")
-    
     
 #residual diagnostics
 def residual_diagnostics(model, X_train) -> None:
