@@ -23,4 +23,4 @@ plt.show()
 #check for missing values
 print("Missing Values: \n", df.isnull().sum())
 
-
+    
