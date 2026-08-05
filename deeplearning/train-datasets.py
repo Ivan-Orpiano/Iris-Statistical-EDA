@@ -48,6 +48,10 @@ class EnhancedCNN (nn.Module):
         #calculate the size of the output
         self._calculate_conv_output()
 
+        self.fc1 = nn.Linear(self.conv_output_size, 120)
+        self.fc2 = nn.Linear(120,84)
+        self.fc3 = nn.Linear(84,10)
+
 
 
 
