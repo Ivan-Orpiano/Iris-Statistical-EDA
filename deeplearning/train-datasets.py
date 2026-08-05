@@ -94,5 +94,15 @@ def train_model(model, train_loader, criterion, optimizer, epochs = 20):
         epoch_loss = running_loss / len(train_loader)
         training_loss.append(epoch_loss)     
         print(f"Epoch{epoch+1}, Loss: {epoch_loss:.4f}" )
+        
+train_model(model, train_loader, criterion, optimizer)
+
+def evaluate_model(model, test_loader):
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for images, labels in test_loader:
+            pass
             
             
