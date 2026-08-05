@@ -53,5 +53,18 @@ class EnhancedCNN (nn.Module):
         self.fc3 = nn.Linear(84,10)
 
 
-
-
+    def _calculate_conv_output(self):
+        dummy_input = torch.zeros(1,3,32,32)
+        with torch.no_grad():
+            output = self.pool(F.relu(self.bn2(self.conv2(F.relu(self.bn1(self.conv1(dummy_input)))))))
+        self._conv_output_size = output.numel()
+        
+    def forward(self, x):
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.pool(F.relu(self.bn2(self.conv2(x))))
+        x = x.view(x.size(0), -1)
+            
+            
+            
+            
+            
