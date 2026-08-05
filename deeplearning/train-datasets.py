@@ -53,5 +53,56 @@ class EnhancedCNN (nn.Module):
         self.fc3 = nn.Linear(84,10)
 
 
+    def _calculate_conv_output(self):
+        dummy_input = torch.zeros(1,3,32,32)
+        with torch.no_grad():
+            output = self.pool(F.relu(self.bn2(self.conv2(F.relu(self.bn1(self.conv1(dummy_input)))))))
+        self._conv_output_size = output.numel()
+        
+    def forward(self, x):
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.pool(F.relu(self.bn2(self.conv2(x))))
+        x = x.view(x.size(0), -1)
+        x =  F.relu(self.fc1(x))
+        x = self.dropout(x)
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+    
+model = EnhancedCNN()
+print(model)
 
+#define loss function and optimizer
 
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr = 0.001)
+
+training_loss = []
+
+#training loop
+def train_model(model, train_loader, criterion, optimizer, epochs = 20):
+    model.train()
+    for epoch in range(epochs):
+        running_loss = 0.0
+        for images, labels in train_loader:
+            optimizer.zero_grad()
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()       
+            running_loss += loss.item()
+        epoch_loss = running_loss / len(train_loader)
+        training_loss.append(epoch_loss)     
+        print(f"Epoch{epoch+1}, Loss: {epoch_loss:.4f}" )
+        
+train_model(model, train_loader, criterion, optimizer)
+
+def evaluate_model(model, test_loader):
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for images, labels in test_loader:
+            pass
+            
+            
