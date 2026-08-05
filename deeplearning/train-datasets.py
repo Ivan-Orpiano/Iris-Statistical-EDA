@@ -71,7 +71,28 @@ class EnhancedCNN (nn.Module):
     
 model = EnhancedCNN()
 print(model)
-            
-            
+
+#define loss function and optimizer
+
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr = 0.001)
+
+training_loss = []
+
+#training loop
+def train_model(model, train_loader, criterion, optimizer, epochs = 20):
+    model.train()
+    for epoch in range(epochs):
+        running_loss = 0.0
+        for images, labels in train_loader:
+            optimizer.zero_grad()
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()       
+            running_loss += loss.item()
+        epoch_loss = running_loss / len(train_loader)
+        training_loss.append(epoch_loss)     
+        print(f"Epoch{epoch+1}, Loss: {epoch_loss:.4f}" )
             
             
