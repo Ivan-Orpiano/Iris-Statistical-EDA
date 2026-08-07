@@ -16,17 +16,12 @@ transform_train = transforms.Compose([
 ])
 
 transform_test = transforms.Compose([
-    
-])
-
-
-transform_test = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
 
 #load CIFAR-10 dataset
-train_dataset = datasets.CIFAR10(root = "./data", train = True, download = True, transforms = transform_train)
+train_dataset = datasets.CIFAR10(root = "./data", train = True, download = True, transform = transform_train)
 test_dataset = datasets.CIFAR10(root = "./data", train = True, download = True, transform=transform_train)
 
 train_loader = DataLoader(train_dataset, batch_size = 64, shuffle = True)
@@ -48,7 +43,7 @@ class EnhancedCNN (nn.Module):
         #calculate the size of the output
         self._calculate_conv_output()
 
-        self.fc1 = nn.Linear(self.conv_output_size, 120)
+        self.fc1 = nn.Linear(self._conv_output_size, 120)
         self.fc2 = nn.Linear(120,84)
         self.fc3 = nn.Linear(84,10)
 
@@ -114,6 +109,12 @@ evaluate_model(model, test_loader)
 
 import matplotlib.pylab as plt
 
+plt.plot(training_loss, label = "Training Loss")
+plt.title('Loss Curve')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
 
 
 
