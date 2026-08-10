@@ -102,7 +102,6 @@ def bias_variance(X, y, degrees=(1,3,6,10,15), n_boot = 120):
     print("As degree rises: bias^2 falls, variance rises -> U-shaped total error.")
 
 
-
 #REGULARIZATION ON A HIGH DEGREE BASIS
 def regularization_compare(X_train, X_test, y_train, y_test, degree=12):
     kf = KFold(n_splits = 5, shuffle=True, random_state=7)
