@@ -27,8 +27,6 @@ RNG = np.random.default_rng(7)
 OUT = "/mnt/user-data/outputs"
 
 
-
-
 def true_function (x: np.ndarray) -> np.ndarray:
     return 0.5 * x **3 - 2.0* x**2 + 1.5 * x + 3.0 + 4.0 * np.sin(1.5 * x)
 
@@ -36,7 +34,6 @@ def make_data(n: int =120, noise: float = 6.0):
     x = np.sort(RNG.uniform(-4, 4, n))
     y = true_function(x) + RNG.normal(0, noise, n)
     return x.reshape(-1, 1), y
-
 
 
 def poly_pipe(degree: int, model = None):
