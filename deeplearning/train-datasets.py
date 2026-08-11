@@ -6,7 +6,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-
 #define transformation with data augmentation
 transform_train = transforms.Compose([
     transforms.RandomHorizontalFlip(),
